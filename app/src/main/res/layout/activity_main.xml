@@ -21,6 +21,13 @@
          />
 
     <Button
+        android:id="@+id/queryByName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="query datas thought appName"
+        />
+
+    <Button
         android:id="@+id/query1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -39,5 +46,13 @@
         android:layout_height="50dp"
         android:text="display time"
         />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 
 </LinearLayout>

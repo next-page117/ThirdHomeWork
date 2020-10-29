@@ -1,8 +1,8 @@
 package com.example.thirdhomework.entity;
 
-import androidx.core.widget.TextViewCompat;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -21,7 +21,7 @@ public class UsageData {
     public long usedTime;
     @ColumnInfo(name="start_time_stamp")
     public long startTimeStamp;
-
+    @Ignore
     public UsageData() {
     }
 

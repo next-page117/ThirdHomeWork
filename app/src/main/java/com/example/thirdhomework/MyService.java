@@ -26,7 +26,6 @@ public class MyService extends Service {
         Log.e("service state","service start");
         super.onCreate();
     }
-
     //在每次服务启动的时候调用
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

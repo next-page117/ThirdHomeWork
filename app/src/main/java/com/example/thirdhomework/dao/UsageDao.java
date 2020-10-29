@@ -18,14 +18,14 @@ public interface UsageDao {
     List<UsageData> loadAllByIds(int[] userIds);
 
     @Query("SELECT * FROM UsageData WHERE app_name like :name")
-    UsageData findByName(String name);
+    List<UsageData> findByName(String name);
 
     @Insert
     void insertAll(UsageData... users);
 
     @Delete
     void delete(UsageData user);
-
     @Query("DELETE FROM UsageData")
     void deleteAll();
+
 }

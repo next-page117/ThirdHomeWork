@@ -72,7 +72,8 @@ public class UsageDataController {
         return usageStatsList;
     }
 
-    //获取用户事件数据
+    /**
+     * 测试获取用户事件数据
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public UsageEvents getUsageEvents(){
         Calendar cal = Calendar.getInstance();
@@ -96,7 +97,7 @@ public class UsageDataController {
             Log.e("event type", nextEvent.getEventType()+"  ");
             Log.e("time stamp",dateFormat.format(new Date(nextEvent.getTimeStamp())));
         }
-    }
+    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void dataDeal(){
@@ -144,6 +145,7 @@ public class UsageDataController {
         }
 
         //模拟获取第一次启动时间和其他数据
+
         for(Map.Entry<String,List<UsageStats>> entry:usageStatsMapOfDaily.entrySet()){
             for(int i=0,j=0;i<entry.getValue().size();j++){
                 String appName=entry.getKey();
@@ -156,8 +158,8 @@ public class UsageDataController {
                 long curFirstTimeStamp= usageStats.getFirstTimeStamp();
                 long curLastTimeUsed=entry.getValue().get(i).getLastTimeUsed();
 
-                String curFirstTime=dateFormat.format(curFirstTimeStamp);
-                String curLastTime=dateFormat.format(curLastTimeUsed);
+                String curFirstTime=dateFormat.format(curFirstTimeStamp);  //测试用
+                String curLastTime=dateFormat.format(curLastTimeUsed);    //测试用转化为公元时间
                 while(curLastTimeUsed<=curFirstTimeStamp){
                     i++;
                     if(i==entry.getValue().size()){
@@ -201,12 +203,19 @@ public class UsageDataController {
 
     public String loadDatabase(){
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                for(Map.Entry<String,List<UsageData>> entry:usageDataMap.entrySet()){
-                    for(UsageData usageData:entry.getValue()){
-                        usageDatabase.usageDao().insertAll(usageData);
-                    }
+                usageStatsList=getUsageStatsList("daily");
+                int i=1;
+                for(UsageStats usageStats:usageStatsList){
+                    UsageData usageData=new UsageData();
+                    usageData.setId(i++);
+                    usageData.setAppName(usageStats.getPackageName());
+                    usageData.setLastStartTime(usageStats.getLastTimeUsed());
+                    usageData.setUsedTime(usageStats.getTotalTimeInForeground());
+                    usageData.setStartTimeStamp(usageStats.getFirstTimeStamp());
+                    usageDatabase.usageDao().insertAll(usageData);
                 }
             }
         }).start();
