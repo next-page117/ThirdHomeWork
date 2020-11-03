@@ -13,6 +13,9 @@ public class UsageData {
     public int id;
     @ColumnInfo(name = "app_name")
     public String appName;
+
+    @ColumnInfo(name="app_chinese_name")
+    public String appChineseName;
     @ColumnInfo(name="first_start_time")
     public long firstStartTime;
     @ColumnInfo(name="last_start_time")
@@ -21,6 +24,8 @@ public class UsageData {
     public long usedTime;
     @ColumnInfo(name="start_time_stamp")
     public long startTimeStamp;
+    @ColumnInfo(name="app_lunch_count")
+    public long appLunchCount;
     @Ignore
     public UsageData() {
     }
@@ -31,6 +36,22 @@ public class UsageData {
         this.firstStartTime = firstStartTime;
         this.lastStartTime = lastStartTime;
         this.usedTime = usedTime;
+    }
+
+    public String getAppChineseName() {
+        return appChineseName;
+    }
+
+    public void setAppChineseName(String appChineseName) {
+        this.appChineseName = appChineseName;
+    }
+
+    public long getAppLunchCount() {
+        return appLunchCount;
+    }
+
+    public void setAppLunchCount(long appLunchCount) {
+        this.appLunchCount = appLunchCount;
     }
 
     public long getStartTimeStamp() {

@@ -17,7 +17,7 @@ public interface UsageDao {
     @Query("SELECT * FROM UsageData WHERE id IN (:userIds)")
     List<UsageData> loadAllByIds(int[] userIds);
 
-    @Query("SELECT * FROM UsageData WHERE app_name like :name")
+    @Query("SELECT * FROM UsageData WHERE app_chinese_name LIKE '%' || :name || '%'")
     List<UsageData> findByName(String name);
 
     @Insert
@@ -27,5 +27,8 @@ public interface UsageDao {
     void delete(UsageData user);
     @Query("DELETE FROM UsageData")
     void deleteAll();
-
+    @Query("DELETE FROM UsageData WHERE app_chinese_name LIKE '%' || :name || '%'")
+    void deleteByName(String name);
+    @Query("SELECT * FROM UsageData WHERE app_name LIKE '%' || :name || '%'")
+    List<UsageData> findByUniqueName(String name);
 }

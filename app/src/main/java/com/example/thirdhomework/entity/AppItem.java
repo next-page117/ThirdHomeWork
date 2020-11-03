@@ -5,6 +5,15 @@ import android.graphics.drawable.Drawable;
 public class AppItem {
     public Drawable appIcon;
     public String appName;
+    public String appUniqueName;
+
+    public String getAppUniqueName() {
+        return appUniqueName;
+    }
+
+    public void setAppUniqueName(String appUniqueName) {
+        this.appUniqueName = appUniqueName;
+    }
 
     public Drawable getAppIcon() {
         return appIcon;

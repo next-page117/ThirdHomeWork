@@ -11,7 +11,7 @@ import androidx.room.RoomDatabase;
 import com.example.thirdhomework.dao.UsageDao;
 import com.example.thirdhomework.entity.UsageData;
 
-@Database(entities = {UsageData.class},version=1,exportSchema = false)
+@Database(entities = {UsageData.class},version=2,exportSchema = false)
 public abstract class UsageDatabase extends RoomDatabase {
 
     public static volatile UsageDatabase sInstance;

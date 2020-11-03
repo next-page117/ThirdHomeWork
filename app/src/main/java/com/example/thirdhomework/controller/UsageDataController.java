@@ -4,6 +4,8 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import android.util.Log;
@@ -12,9 +14,14 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.room.Update;
 
+import com.example.thirdhomework.MainActivity;
+import com.example.thirdhomework.MyApplication;
 import com.example.thirdhomework.UsageDatabase;
 import com.example.thirdhomework.entity.UsageData;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -104,7 +111,7 @@ public class UsageDataController {
         dateFormat1.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 
         List<UsageStats> usageStatsListOfDaily=getUsageStatsList("daily");
-        List<UsageStats> usageStatsList=getUsageStatsList("weekly");
+        List<UsageStats> usageStatsList=getUsageStatsList("yearly");
         Collections.sort(usageStatsListOfDaily, new Comparator<UsageStats>() {
             @Override
             public int compare(UsageStats o1, UsageStats o2) {
@@ -215,11 +222,33 @@ public class UsageDataController {
                     usageData.setLastStartTime(usageStats.getLastTimeUsed());
                     usageData.setUsedTime(usageStats.getTotalTimeInForeground());
                     usageData.setStartTimeStamp(usageStats.getFirstTimeStamp());
+                    //获取app中文名
+                    PackageManager packageManager= MyApplication.getContext().getPackageManager();
+                    ApplicationInfo applicationInfo= null;
+                    try {
+                        applicationInfo = packageManager.getApplicationInfo(usageStats.getPackageName(),0);
+                        usageData.setAppChineseName(packageManager.getApplicationLabel(applicationInfo).toString());
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    //使用反射获取启动次数
+                    Class<?> c = UsageStats.class;
+                    Method method=null;
+                    try {
+                        method=c.getMethod("getAppLaunchCount");
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        Integer launchCountInteger=(Integer)method.invoke(usageStats);
+                        usageData.setAppLunchCount(launchCountInteger.longValue());
+                    } catch (InvocationTargetException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                     usageDatabase.usageDao().insertAll(usageData);
                 }
             }
         }).start();
         return null;
     }
-
 }
