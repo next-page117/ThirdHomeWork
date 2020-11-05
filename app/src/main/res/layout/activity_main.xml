@@ -48,7 +48,7 @@
             android:id="@+id/insert1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="insert one data" />
+            android:text="load database" />
 
         <Button
             android:id="@+id/queryByName"
@@ -75,10 +75,23 @@
             android:text="delete data by name" />
 
         <Button
-            android:id="@+id/display1"
+            android:id="@+id/start_service"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="display time" />
+            android:text="start service" />
+
+        <Button
+            android:id="@+id/show_events"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="show events info"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/collect_one_day_data"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="show data of one day"
+            />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

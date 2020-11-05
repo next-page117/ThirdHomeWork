@@ -48,6 +48,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 int position=viewHolder.getAdapterPosition();
                 AppItem appItem=appItemList.get(position);
                 Intent intent =new Intent(MyApplication.getContext(),SecondActivity.class);
+                //允许adapter跳转activity
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("appName",appItem.appName);
                 intent.putExtra("appUniqueName",appItem.getAppUniqueName());

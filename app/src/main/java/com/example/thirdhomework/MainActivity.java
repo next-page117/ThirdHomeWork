@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.app.usage.UsageStatsManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.text.Editable;
 import android.util.Log;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static List<AppItem> appItemList = new ArrayList<>();
     private PackageManager packageManager;
     private EditText searchContent;
+    private static MainActivity mainActivityInstance;
     Button openUsageSettingButton;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -59,10 +63,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainActivityInstance=this;
         //开启数据访问许可
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-        //开启前台服务
-        getApplicationContext().startForegroundService(new Intent(getApplicationContext(), MyService.class));
+
         //获取数据库实例
         usageDatabase = UsageDatabase.getInstance(this);
         //获取usageStatsManager实例
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn1.setOnClickListener(this);
         Button btn2 = findViewById(R.id.queryAll);
         btn2.setOnClickListener(this);
-        Button btn3 = findViewById(R.id.display1);
+        Button btn3 = findViewById(R.id.start_service);
         btn3.setOnClickListener(this);
         Button btn4 = findViewById(R.id.deleteAll);
         btn4.setOnClickListener(this);
@@ -85,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn6.setOnClickListener(this);
         Button btn7 = findViewById(R.id.search);
         btn7.setOnClickListener(this);
+        Button btn8 = findViewById(R.id.show_events);
+        btn8.setOnClickListener(this);
+        Button btn9 = findViewById(R.id.collect_one_day_data);
+        btn9.setOnClickListener(this);
+
 
         openUsageSettingButton = findViewById(R.id.OpenUsageSettingButton);
 
@@ -101,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new RecyclerViewAdapter(appItemList);
         recyclerView.setAdapter(mAdapter);
         initRecyclerListData();
+        //开启服务，须在最后开启
+        getApplicationContext().startForegroundService(new Intent(getApplicationContext(), MyService.class));
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initRecyclerListData(){
@@ -148,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
@@ -196,12 +209,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.deleteByName: {
                 new Thread(() -> {
+                    /*long endTime=System.currentTimeMillis()-3600*24*1000*2;
+                    usageDataList=usageDatabase.usageDao().getAll();
+                    for(UsageData usageData:usageDataList){
+                        if(usageData.getLastStartTime()<endTime||usageData.getUsedTime()==0){
+                            usageDatabase.usageDao().delete(usageData);
+                        }
+                    }*/
                     usageDatabase.usageDao().deleteByName("知乎");
-                    usageDatabase.usageDao().deleteByName("qq");
+                    usageDatabase.usageDao().deleteByName("知乎");
                 }).start();
                 break;
             }
-            case R.id.display1: {
+            case R.id.start_service: {
                 getApplicationContext().startForegroundService(new Intent(getApplicationContext(), MyService.class));
                 break;
             }
@@ -228,6 +248,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mAdapter.notifyDataSetChanged();
                 break;
             }
+            case R.id.show_events: {
+                usageDataController.dealEvents();
+                break;
+            }
+            case R.id.collect_one_day_data: {
+                usageDataController.collectData();
+                break;
+            }
         }
+    }
+    public static MainActivity getInstance(){
+        return mainActivityInstance;
     }
 }

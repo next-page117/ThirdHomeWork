@@ -1,5 +1,6 @@
 package com.example.thirdhomework;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -29,6 +30,9 @@ import com.example.thirdhomework.controller.UsageDataController;
 import com.example.thirdhomework.entity.AppItem;
 import com.example.thirdhomework.entity.UsageData;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,21 +79,34 @@ public class MyService extends Service {
     }
 
     //在每次服务启动的时候调用
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("WrongConstant")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         usageDataController = new UsageDataController(usageDatabase, usageStatsManager, "monthly");
         if (usageDataController.getUsageStatsList("daily").size() == 0) {
             Toast.makeText(this, "请打开数据访问权限", Toast.LENGTH_LONG).show();
             openUsageSettingButton.setVisibility(View.VISIBLE);
-            openUsageSettingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-                }
-            });
+            openUsageSettingButton.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)));
             return 0;
+        }else{
+            //收集数据并加载到sqlite中
+            usageDataController.collectData();
+            //使用反射调用MainActivity中的Recycler初始化方法
+            //刷新RecyclerView
+            Class<?> mainActivityClass= MainActivity.class;
+            Method initRecyclerListDataMethod;
+            try {
+                initRecyclerListDataMethod=mainActivityClass.getMethod("initRecyclerListData");
+                initRecyclerListDataMethod.invoke(MainActivity.getInstance());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -100,6 +117,4 @@ public class MyService extends Service {
     public void loadDatabase() {
         usageDataController.loadDatabase();
     }
-
-
 }
