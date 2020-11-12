@@ -249,7 +249,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.show_events: {
-                usageDataController.dealEvents();
+                try {
+                    usageDataController.dealEvents();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
             case R.id.collect_one_day_data: {
