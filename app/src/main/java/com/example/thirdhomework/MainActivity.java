@@ -30,12 +30,16 @@ import android.widget.Toast;
 import com.example.thirdhomework.adapter.RecyclerViewAdapter;
 import com.example.thirdhomework.controller.UsageDataController;
 import com.example.thirdhomework.entity.AppItem;
+import com.example.thirdhomework.entity.EventData;
 import com.example.thirdhomework.entity.UsageData;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private UsageDatabase usageDatabase;
     private final String TAG = "databaseTest";
     private static List<UsageData> usageDataList;
+    private List<EventData> eventDataList=new ArrayList<>();
     private UsageStatsManager usageStatsManager;
     private UsageDataController usageDataController;
     private RecyclerView recyclerView;
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText searchContent;
     private static MainActivity mainActivityInstance;
     Button openUsageSettingButton;
+    private UserBehaviorPrediction userBehaviorPrediction;
+    private DateFormat dateFormat=new SimpleDateFormat();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -249,11 +256,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.show_events: {
-                try {
-                    usageDataController.dealEvents();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                new Thread(()->{
+                    eventDataList=usageDatabase.eventDao().getAll();
+                    for(EventData eventData:eventDataList){
+                        System.out.println(eventData.getAppChineseName()+","+
+                                dateFormat.format(new Date(eventData.getTimeStamp())));
+                    }
+                    userBehaviorPrediction=new UserBehaviorPrediction(eventDataList);
+                    synchronized (Thread.currentThread()) { //先加锁再等待
+                        Thread.currentThread().notify();
+                    }
+                }).start();
+                synchronized (Thread.currentThread()) { //先加锁再等待
+                    try {
+                        Thread.currentThread().wait(700);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
+                userBehaviorPrediction.markov();
                 break;
             }
             case R.id.collect_one_day_data: {
