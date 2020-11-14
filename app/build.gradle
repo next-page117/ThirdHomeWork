@@ -54,4 +54,6 @@ dependencies {
 
     //noinspection GradleCompatible,GradleCompatible
     implementation 'com.android.support:design:28.0.0'
+    //对图片进行处理
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 }
