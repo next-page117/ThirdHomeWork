@@ -264,7 +264,8 @@ public class UsageDataController {
         }
         //通过最大时间过滤从UsageStats搜集到的数据
         usageStatsList = usageStatsList.stream()    //获取stream流
-                .filter((o) -> usageDataLastTimeMap.containsKey(o.getPackageName())
+                .filter((o) -> !usageDataLastTimeMap.containsKey(o.getPackageName())
+                        || usageDataLastTimeMap.containsKey(o.getPackageName())
                         && o.getLastTimeUsed()>usageDataLastTimeMap.get(o.getPackageName()))
                 .filter((o) -> o.getTotalTimeInForeground() > 0)  //过滤使用时间为0的数据
                 .filter((o)->o.getLastTimeStamp()<=endTimeInMillis-ONE_DAY_IN_MILLIS)  //过滤时间间隔距离当前太小的数据

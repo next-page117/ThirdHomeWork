@@ -1,12 +1,17 @@
 package com.example.thirdhomework;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
+import android.annotation.SuppressLint;
 import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -21,7 +26,9 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.text.Editable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +39,7 @@ import com.example.thirdhomework.controller.UsageDataController;
 import com.example.thirdhomework.entity.AppItem;
 import com.example.thirdhomework.entity.UsageData;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,6 +52,9 @@ import java.util.stream.Stream;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    //侧边栏
+    private DrawerLayout drawerLayout;
+
     private UsageDatabase usageDatabase;
     private final String TAG = "databaseTest";
     private static List<UsageData> usageDataList;
@@ -63,7 +74,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+
+//        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         mainActivityInstance=this;
         //开启数据访问许可
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
@@ -94,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn8.setOnClickListener(this);
         Button btn9 = findViewById(R.id.collect_one_day_data);
         btn9.setOnClickListener(this);
+        Button btn10 = findViewById(R.id.thirdActivity);
+        btn10.setOnClickListener(this);
 
 
         openUsageSettingButton = findViewById(R.id.OpenUsageSettingButton);
@@ -256,9 +273,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 usageDataController.collectData();
                 break;
             }
+            case R.id.thirdActivity: {
+//                Intent intent = new Intent(MainActivity.this,ThirdActivity.class);
+//                startActivity(intent);
+            }
         }
     }
     public static MainActivity getInstance(){
         return mainActivityInstance;
+    }
+
+    //动态加载标题栏的toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbarl,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    //多个toobar选中是点的哪一个
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.backup:
+                Toast.makeText(this,"点击了返回",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.settings:
+                Toast.makeText(this,"点击了设置",Toast.LENGTH_SHORT).show();
+                break;
+            //标题栏左边ID永远为android.R.id.home
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);//显示隐藏的内容
+                break;
+        }
+        return true;
     }
 }

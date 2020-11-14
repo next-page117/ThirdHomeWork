@@ -1,10 +1,26 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Base application theme. --><!--设置为不要actionbar-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item><!--标题栏颜色-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--系统顶部颜色就是电池那一行-->
+        <item name="colorAccent">@color/colorAccent</item><!--各种控件选中的颜色-->
     </style>
 
+    <!--设置点击toolbar显示在下方-->
+    <style name="ToolBarPopupThem" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <!-- 设置popupMenu背景颜色-->
+        <item name="android:colorBackground">@color/colorPrimary</item>
+        <!--设置popupMenu弹出位置不覆盖toolbar -->
+        <item name="overlapAnchor">false</item>
+        <!-- 修改字体大小 -->
+        <item name="android:textSize">15sp</item>
+        <!-- 修改字体颜色 -->
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <!--状态栏透明-->
+    <style name="FruitActivityTheme" parent="AppTheme">
+
+    </style>
 </resources>

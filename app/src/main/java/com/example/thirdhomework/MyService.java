@@ -62,7 +62,6 @@ public class MyService extends Service {
         usageStatsManager = (UsageStatsManager) getApplicationContext()
                 .getSystemService(Context.USAGE_STATS_SERVICE);
         usageDatabase = UsageDatabase.getInstance(getApplicationContext());
-
         super.onCreate();
         //实现前台服务
         String ID = "Notification_ID";
@@ -86,9 +85,7 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         usageDataController = new UsageDataController(usageDatabase, usageStatsManager, "monthly");
         if (usageDataController.getUsageStatsList("daily").size() == 0) {
-            Toast.makeText(this, "请打开数据访问权限", Toast.LENGTH_LONG).show();
-            openUsageSettingButton.setVisibility(View.VISIBLE);
-            openUsageSettingButton.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)));
+
             return 0;
         }else{
             //收集数据并加载到sqlite中
