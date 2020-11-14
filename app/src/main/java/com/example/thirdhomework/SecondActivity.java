@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.thirdhomework.entity.UsageData;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,9 @@ public class SecondActivity extends AppCompatActivity {
     private TextView used_total_time;
     private TextView app_launch_count;
     private TextView used_total_time_of_day;
+
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+
     private DateFormat dateFormat=new SimpleDateFormat();
     private DateFormat dateFormat1=new SimpleDateFormat("HH时mm分ss秒");
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -44,10 +48,13 @@ public class SecondActivity extends AppCompatActivity {
         appName=intent.getStringExtra("appName");
         appUniqueName=intent.getStringExtra("appUniqueName");
 
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle(appName);
+
         usageDatabase=UsageDatabase.getInstance(getApplicationContext());
         usageDataList=new ArrayList<>();
 
-        app_Name=findViewById(R.id.app_name_2);
+//        app_Name=findViewById(R.id.app_name_2);
         first_start_time=findViewById(R.id.first_start_time_2);
         last_start_time=findViewById(R.id.last_start_time_2);
         used_total_time=findViewById(R.id.used_total_time_2);
@@ -85,7 +92,7 @@ public class SecondActivity extends AppCompatActivity {
             appLaunchCount+=usageData.appLunchCount;
             usedTotalTimeOfDay=Math.max(usedTotalTimeOfDay,usageData.getUsedTime());
         }
-        app_Name.setText(appName);
+//        app_Name.setText(appName);
         first_start_time.setText(dateFormat.format(new Date(usageDataList.get(0).getLastStartTime())));
         last_start_time.setText(dateFormat.format(
                 new Date(usageDataList.get(usageDataList.size()-1).getLastStartTime())));

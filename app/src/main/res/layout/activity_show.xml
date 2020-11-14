@@ -71,12 +71,12 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/first_start_time_2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
+                        android:text="2020/11/12 上午6:29"
                         android:textSize="15dp">
                     </TextView>
                 </RelativeLayout>
@@ -106,12 +106,12 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/last_start_time_2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
+                        android:text="2020/11/12 上午6:29"
                         android:textSize="15dp">
 
                     </TextView>
@@ -142,12 +142,47 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/used_total_time_2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
+                        android:text="2020/11/12 上午6:29"
+                        android:textSize="15dp">
+
+                    </TextView>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_margin="15dp"
+                android:layout_marginTop="35dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="单日最长使用时间:"
+                        android:textSize="15dp">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="2020/11/12 上午6:29"
                         android:textSize="15dp">
 
                     </TextView>
@@ -178,48 +213,12 @@
                     </TextView>
 
                     <TextView
-                        android:id="@+id/app_launch_count_2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:textSize="15dp">
-
-                    </TextView>
-                </RelativeLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_margin="15dp"
-                android:layout_marginTop="35dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="单日最长使用时间:"
-                        android:textSize="15dp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/used_total_time_of_day_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
+                        android:text="2020/11/12 上午6:29"
                         android:textSize="15dp">
 
                     </TextView>

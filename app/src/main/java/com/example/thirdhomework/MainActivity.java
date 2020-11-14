@@ -38,6 +38,7 @@ import com.example.thirdhomework.adapter.RecyclerViewAdapter;
 import com.example.thirdhomework.controller.UsageDataController;
 import com.example.thirdhomework.entity.AppItem;
 import com.example.thirdhomework.entity.UsageData;
+import com.google.android.material.navigation.NavigationView;
 
 import java.net.Inet4Address;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
 
 
-//        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+//      startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         mainActivityInstance=this;
         //开启数据访问许可
         //startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
@@ -128,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new RecyclerViewAdapter(appItemList);
         recyclerView.setAdapter(mAdapter);
         initRecyclerListData();
+        //初始化侧边栏
+        initNavigationMenu();
         //开启服务，须在最后开启
         getApplicationContext().startForegroundService(new Intent(getApplicationContext(), MyService.class));
     }
@@ -178,6 +181,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //侧边栏初始化
+    private void initNavigationMenu(){
+        final NavigationView navigationView=findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.freq_app);//打开侧边栏默认选中菜单
+        //菜单栏的监听事件
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                navigationView.setCheckedItem(menuItem.getItemId());//点击的菜单设置为选中
+                Toast.makeText(MainActivity.this,"点击了"+menuItem.getTitle(),Toast.LENGTH_SHORT).show();
+                switch (menuItem.getItemId()){
+                    case R.id.freq_app:
+                        Intent intent = new Intent(MainActivity.this,ShowActivity.class);
+                        intent.putExtra("appName","谷歌浏览器");
+                        startActivity(intent);
+                }
+                return false;
+            }
+        });
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
