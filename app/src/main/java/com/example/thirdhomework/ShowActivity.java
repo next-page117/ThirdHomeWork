@@ -5,17 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.example.thirdhomework.entity.UsageData;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.util.List;
-
 public class ShowActivity extends AppCompatActivity {
-    private ImageView imageView;
-
     private String appName;
+    private int flag;
+
+    private ImageView imageView;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +22,22 @@ public class ShowActivity extends AppCompatActivity {
 
         Intent intent=getIntent();
         appName=intent.getStringExtra("appName");
+        flag=intent.getIntExtra("flag",0);
 
-        CollapsingToolbarLayout collapsingToolbarLayout=findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle(appName);
-
+        collapsingToolbarLayout=findViewById(R.id.collapsing_toolbar);
         imageView = findViewById(R.id.show_image_view);
-        imageView.setImageResource(R.drawable.pic);
+
+        switch (flag){
+            case 0:
+                imageView.setImageResource(R.drawable.frequent_app);
+                break;
+            case 1:
+                imageView.setImageResource(R.drawable.long_app);
+                break;
+        }
+
+
+        collapsingToolbarLayout.setTitle(appName);
 
 
     }

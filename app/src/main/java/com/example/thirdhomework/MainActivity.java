@@ -6,24 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
-import android.annotation.SuppressLint;
 import android.app.usage.UsageStatsManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
-import android.content.ServiceConnection;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.provider.Settings;
 import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
@@ -40,14 +33,9 @@ import com.example.thirdhomework.entity.AppItem;
 import com.example.thirdhomework.entity.UsageData;
 import com.google.android.material.navigation.NavigationView;
 
-import java.net.Inet4Address;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -190,13 +178,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 navigationView.setCheckedItem(menuItem.getItemId());//点击的菜单设置为选中
-                Toast.makeText(MainActivity.this,"点击了"+menuItem.getTitle(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, ShowActivity.class);
                 switch (menuItem.getItemId()){
                     case R.id.freq_app:
-                        Intent intent = new Intent(MainActivity.this,ShowActivity.class);
+                        intent.putExtra("flag",0);//flag为0表示显示最常用app
                         intent.putExtra("appName","谷歌浏览器");
-                        startActivity(intent);
+                        break;
+                    case R.id.long_app:
+                        intent.putExtra("flag",1);//flag为1表示显示使用时间最长app
+                        break;
                 }
+                startActivity(intent);
                 return false;
             }
         });
