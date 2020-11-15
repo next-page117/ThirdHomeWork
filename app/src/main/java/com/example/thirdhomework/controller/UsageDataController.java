@@ -72,6 +72,9 @@ public class UsageDataController {
         intervals.put("yearly", 3);
     }
 
+    public UsageDataController() {
+    }
+
     public UsageDataController(UsageDatabase usageDatabase, UsageStatsManager usageStatsManager, String interval) {
         this.usageDatabase = usageDatabase;
         this.usageStatsManager = usageStatsManager;
